@@ -11,13 +11,18 @@
     "url": "https://github.com/htmlacademy-javascript/859429-code-and-magick-17/issues"
   },
   "devDependencies": {
+    "browser-sync": "^2.26.5",
     "eslint": "4.19.1",
-    "eslint-config-htmlacademy": "0.5.2"
+    "eslint-config-htmlacademy": "0.5.2",
+    "gulp": "^4.0.2",
+    "gulp-plumber": "^1.2.1",
+    "gulp-wait": "0.0.2"
   },
   "license": "MIT",
   "dependencies": {},
   "scripts": {
-    "test": "eslint js/"
+    "test": "eslint js/",
+    "start": "gulp start"
   },
   "engines": {
     "node": "8.11"
