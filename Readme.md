@@ -1,7 +1,7 @@
 # Учебный проект «Код и Магия» [![Build status][travis-image]][travis-url]
 
 * Студент: [Alexander Rylkov](https://up.htmlacademy.ru/javascript/17/user/859429).
-* Наставник: `Неизвестно`.
+* Наставник: Наставник: [Александр Тимоновский](https://htmlacademy.ru/profile/id768125).
 
 ---
 
