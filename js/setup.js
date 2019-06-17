@@ -3,16 +3,17 @@
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
-// показ/скрытие блока setup
+// Блок setup и его элементы
 var setupBlock = document.querySelector('.setup');
 var setupOpenElement = document.querySelector('.setup-open');
 var setupCloseElement = setupBlock.querySelector('.setup-close');
+var userNameInput = setupBlock.querySelector('.setup-user-name');
 
 function popupEscPress(evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     closeSetupPopup();
   }
-};
+}
 
 function openSetupPopup() {
   setupBlock.classList.remove('hidden');
@@ -26,7 +27,7 @@ function closeSetupPopup() {
 
 // обработчик на клик и на нажатие enter по элементу setupOpenElement
 setupOpenElement.addEventListener('click', openSetupPopup);
-setupOpenElement.addEventListener('keydown', function(evt) {
+setupOpenElement.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     openSetupPopup();
   }
@@ -34,9 +35,31 @@ setupOpenElement.addEventListener('keydown', function(evt) {
 
 // обработчик на клик и на нажатие enter по элементу setupCloseElement
 setupCloseElement.addEventListener('click', closeSetupPopup);
-setupCloseElement.addEventListener('keydown', function(evt) {
+setupCloseElement.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closeSetupPopup();
+  }
+});
+
+// Если фокус находится на форме ввода имени, то окно закрываться не должно:
+userNameInput.addEventListener('focus', function () {
+  document.removeEventListener('keydown', popupEscPress);
+});
+
+userNameInput.addEventListener('blur', function () {
+  document.addEventListener('keydown', popupEscPress);
+});
+
+// валидация формы
+userNameInput.addEventListener('invalid', function () {
+  if (userNameInput.validity.tooShort) {
+    userNameInput.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else if (userNameInput.validity.tooLong) {
+    userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов');
+  } else if (userNameInput.validity.valueMissing) {
+    userNameInput.setCustomValidity('Обязательное поле');
+  } else {
+    userNameInput.setCustomValidity('');
   }
 });
 
@@ -133,3 +156,72 @@ similarListElement.appendChild(getWizardsFragment(wizardsArr, similarWizardTempl
 
 // показываем блок setup-similar
 document.querySelector('.setup-similar').classList.remove('hidden');
+
+// изменяем мага
+var setupWizard = setupBlock.querySelector('.setup-player');
+
+function setWizardElementColor(element, colors) {
+  element.style.fill = colors[getRandomInt(0, colors.length)];
+}
+
+// меняем цвет мантии
+var wizardCoat = setupWizard.querySelector('.wizard-coat');
+
+var wizardCoatColors = [
+  'rgb(101, 137, 164)',
+  'rgb(241, 43, 107)',
+  'rgb(146, 100, 161)',
+  'rgb(56, 159, 117)',
+  'rgb(215, 210, 55)',
+  'rgb(0, 0, 0)'
+];
+
+wizardCoat.addEventListener('click', function () {
+  setWizardElementColor(wizardCoat, wizardCoatColors);
+});
+
+wizardCoat.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    setWizardElementColor(wizardCoat, wizardCoatColors);
+  }
+});
+
+// меняем цвет глаз
+var wizardEyes = setupWizard.querySelector('.wizard-eyes');
+var wizardEyesColors = [
+  'black',
+  'red',
+  'blue',
+  'yellow',
+  'green'
+];
+
+wizardEyes.addEventListener('click', function () {
+  setWizardElementColor(wizardEyes, wizardEyesColors);
+});
+
+wizardEyes.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    setWizardElementColor(wizardEyes, wizardEyesColors);
+  }
+});
+
+// меняем цвет фаербола
+var fireBall = setupWizard.querySelector('.setup-fireball-wrap');
+var fireBallColors = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+];
+
+fireBall.addEventListener('click', function () {
+  fireBall.style.backgroundColor = fireBallColors[getRandomInt(0, fireBallColors.length)];
+});
+
+fireBall.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    fireBall.style.backgroundColor = fireBallColors[getRandomInt(0, fireBallColors.length)];
+  }
+});
