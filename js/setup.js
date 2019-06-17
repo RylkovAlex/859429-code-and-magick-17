@@ -1,8 +1,45 @@
 'use strict';
 
-// показываем блок setup
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
+// показ/скрытие блока setup
 var setupBlock = document.querySelector('.setup');
-setupBlock.classList.remove('hidden');
+var setupOpenElement = document.querySelector('.setup-open');
+var setupCloseElement = setupBlock.querySelector('.setup-close');
+
+function popupEscPress(evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeSetupPopup();
+  }
+};
+
+function openSetupPopup() {
+  setupBlock.classList.remove('hidden');
+  document.addEventListener('keydown', popupEscPress);
+}
+
+function closeSetupPopup() {
+  setupBlock.classList.add('hidden');
+  document.removeEventListener('keydown', popupEscPress);
+}
+
+// обработчик на клик и на нажатие enter по элементу setupOpenElement
+setupOpenElement.addEventListener('click', openSetupPopup);
+setupOpenElement.addEventListener('keydown', function(evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openSetupPopup();
+  }
+});
+
+// обработчик на клик и на нажатие enter по элементу setupCloseElement
+setupCloseElement.addEventListener('click', closeSetupPopup);
+setupCloseElement.addEventListener('keydown', function(evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeSetupPopup();
+  }
+});
+
 // блок для вставки похожих магов
 var similarListElement = setupBlock.querySelector('.setup-similar-list');
 // шаблон с магом
