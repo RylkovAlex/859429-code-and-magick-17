@@ -160,8 +160,13 @@ document.querySelector('.setup-similar').classList.remove('hidden');
 // изменяем мага
 var setupWizard = setupBlock.querySelector('.setup-player');
 
-function setWizardElementColor(element, colors) {
-  element.style.fill = colors[getRandomInt(0, colors.length)];
+function setElementColor(element, colors) {
+  var color = colors[getRandomInt(0, colors.length)];
+  if (element.tagName.toLowerCase() === 'div') {
+    element.style.backgroundColor = color;
+  } else {
+    element.style.fill = color;
+  }
 }
 
 // меняем цвет мантии
@@ -177,12 +182,12 @@ var wizardCoatColors = [
 ];
 
 wizardCoat.addEventListener('click', function () {
-  setWizardElementColor(wizardCoat, wizardCoatColors);
+  setElementColor(wizardCoat, wizardCoatColors);
 });
 
 wizardCoat.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
-    setWizardElementColor(wizardCoat, wizardCoatColors);
+    setElementColor(wizardCoat, wizardCoatColors);
   }
 });
 
@@ -197,12 +202,12 @@ var wizardEyesColors = [
 ];
 
 wizardEyes.addEventListener('click', function () {
-  setWizardElementColor(wizardEyes, wizardEyesColors);
+  setElementColor(wizardEyes, wizardEyesColors);
 });
 
 wizardEyes.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
-    setWizardElementColor(wizardEyes, wizardEyesColors);
+    setElementColor(wizardEyes, wizardEyesColors);
   }
 });
 
@@ -217,7 +222,7 @@ var fireBallColors = [
 ];
 
 fireBall.addEventListener('click', function () {
-  fireBall.style.backgroundColor = fireBallColors[getRandomInt(0, fireBallColors.length)];
+  setElementColor(fireBall, fireBallColors);
 });
 
 fireBall.addEventListener('keydown', function (evt) {
