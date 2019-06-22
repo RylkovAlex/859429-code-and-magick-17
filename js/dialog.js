@@ -112,13 +112,37 @@
 
   // перетаскивания предметов из магазина в рюкзак.
   var shop = document.querySelector('.setup-artifacts-shop');
-  // var bag = document.querySelector('.setup-artifacts');
+  var bag = document.querySelector('.setup-artifacts');
 
-  shop.addEventListener('mousedown', function (evt) {
+  function starMoveHandler(evt) {
+    var bagCells = bag.querySelectorAll('.setup-artifacts-cell');
+    var bagFreeCell = window.util.getElWithoutChilds(bagCells);
+    var shopCells = shop.querySelectorAll('.setup-artifacts-cell');
+    var shopFreeCell = window.util.getElWithoutChilds(shopCells);
+
+    var bagCoords = window.util.getCoords(bag);
     var item = evt.target;
+    var itemDefault = {
+      x: item.style.left,
+      y: item.style.top
+    };
+
     if (item.tagName.toLowerCase() === 'img') {
       moveElement(evt, item, item);
     }
-  }, false);
+    // TODO: исправить баг с перемещением "shop to shop" и "bag to bag"
+    document.addEventListener('mouseup', function (mouseupEvt) {
+      if (mouseupEvt.clientX > bagCoords.left && mouseupEvt.clientX < bagCoords.right && mouseupEvt.clientY > bagCoords.top && mouseupEvt.clientY < bagCoords.bottom) {
+        bagFreeCell.appendChild(item);
+      } else {
+        shopFreeCell.appendChild(item);
+      }
+      item.style.left = itemDefault.x;
+      item.style.top = itemDefault.y;
+    });
+  }
+
+  shop.addEventListener('mousedown', starMoveHandler, false);
+  bag.addEventListener('mousedown', starMoveHandler, false);
 
 })();
