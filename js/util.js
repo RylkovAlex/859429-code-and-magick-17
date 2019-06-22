@@ -29,6 +29,25 @@ window.util = (function () {
       if (evt.keyCode === ENTER_KEYCODE) {
         action();
       }
+    },
+    // вычисляет координаты элемента относительно страницы
+    getCoords: function (elem) {
+      var box = elem.getBoundingClientRect();
+      return {
+        top: box.top + pageYOffset,
+        left: box.left + pageXOffset,
+        right: box.left + pageXOffset + elem.offsetWidth,
+        bottom: box.top + pageYOffset + elem.offsetHeight
+      };
+    },
+    getElWithoutChilds: function (elements) {
+      for (var i = 0; i < elements.length; i++) {
+        if (elements[i].children.length === 0) {
+          return elements[i];
+        }
+      }
+      // eslint-disable-next-line no-alert
+      return alert('пустых ячеек не обнаружено!');
     }
   };
 })();
