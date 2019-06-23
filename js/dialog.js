@@ -7,6 +7,44 @@
   var userNameInput = setupBlock.querySelector('.setup-user-name');
   var setupDefaultY;
   var setupDefaultX;
+  var form = setupBlock.querySelector('.setup-wizard-form');
+  var submitButton = form.querySelector('.setup-submit');
+
+  function FormSuccessHandler() {
+    setupBlock.classList.add('hidden');
+    submitButton.disabled = false;
+    var divNode = document.createElement('div');
+    var spanNode = document.createElement('span');
+    divNode.style = 'position: absolute; top: 50%; z-index: 100; height: 100px; margin: 0 auto; display: flex; background-color: green; ';
+    divNode.style.left = 0;
+    divNode.style.right = 0;
+    spanNode.textContent = 'Данные отправлены!';
+    spanNode.style = 'margin: auto; font-size: 40px;';
+    divNode.appendChild(spanNode);
+    document.body.insertAdjacentElement('afterbegin', divNode);
+    setTimeout(function () {
+      divNode.remove();
+    }, 500);
+  }
+
+  function FormErrorHandler(errorMessage) {
+    var divNode = document.createElement('div');
+    var spanNode = document.createElement('span');
+    divNode.style = 'position: absolute; top: 50%; z-index: 100; height: 60px; margin: 0 auto; display: flex; background-color: red; ';
+    divNode.style.left = 0;
+    divNode.style.right = 0;
+    spanNode.textContent = errorMessage;
+    spanNode.style = 'margin: auto; font-size: 40px;';
+    divNode.appendChild(spanNode);
+    document.body.insertAdjacentElement('afterbegin', divNode);
+  }
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    submitButton.disabled = true;
+    window.backend.save(new FormData(form), FormSuccessHandler, FormErrorHandler);
+  });
+
   // закрытие диалога по Esc
   function popupEscPress(evt) {
     window.util.isEscEvent(evt, closeSetupPopup);
