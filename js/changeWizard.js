@@ -3,12 +3,16 @@
   var ENTER_KEYCODE = 13;
   var setupBlock = document.querySelector('.setup');
   var setupWizard = setupBlock.querySelector('.setup-player');
-  function setElementColor(element, colors) {
+
+  function setElementColor(element, colors, inputName) {
+    var input = document.querySelector('[name=\"' + inputName + '\"]');
     var color = colors[window.util.getRandomInt(0, colors.length)];
     if (element.tagName.toLowerCase() === 'div') {
       element.style.backgroundColor = color;
+      input.value = color;
     } else {
       element.style.fill = color;
+      input.value = color;
     }
   }
   // меняем цвет мантии по клику или enter
@@ -22,10 +26,10 @@
     'rgb(0, 0, 0)'
   ];
   wizardCoat.addEventListener('click', function () {
-    setElementColor(wizardCoat, wizardCoatColors);
+    setElementColor(wizardCoat, wizardCoatColors, 'coat-color');
   });
   wizardCoat.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, wizardCoatColors);
+    window.util.isEnterEvent(evt, wizardCoatColors, 'coat-color');
   });
   // меняем цвет глаз по клику или enter
   var wizardEyes = setupWizard.querySelector('.wizard-eyes');
@@ -37,11 +41,11 @@
     'green'
   ];
   wizardEyes.addEventListener('click', function () {
-    setElementColor(wizardEyes, wizardEyesColors);
+    setElementColor(wizardEyes, wizardEyesColors, 'eyes-color');
   });
   wizardEyes.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      setElementColor(wizardEyes, wizardEyesColors);
+      setElementColor(wizardEyes, wizardEyesColors, 'eyes-color');
     }
   });
   // меняем цвет фаербола по клику или enter
@@ -54,11 +58,11 @@
     '#e6e848'
   ];
   fireBall.addEventListener('click', function () {
-    setElementColor(fireBall, fireBallColors);
+    setElementColor(fireBall, fireBallColors, 'fireball-color');
   });
   fireBall.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      fireBall.style.backgroundColor = fireBallColors[window.util.getRandomInt(0, fireBallColors.length)];
+      setElementColor(fireBall, fireBallColors, 'fireball-color');
     }
   });
 })();
