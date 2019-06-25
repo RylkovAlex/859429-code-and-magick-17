@@ -27,7 +27,7 @@ window.util = (function () {
     // action по нажатию на Enter
     isEnterEvent: function (evt, action) {
       if (evt.keyCode === ENTER_KEYCODE) {
-        action();
+        action(evt);
       }
     },
     // вычисляет координаты элемента относительно страницы
