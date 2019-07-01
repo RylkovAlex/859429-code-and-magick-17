@@ -68,7 +68,7 @@
     }
     window.debounce(function () {
       window.updateWizards();
-    });
+    })();
   }
 
 })();
