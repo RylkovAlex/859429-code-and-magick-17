@@ -7,81 +7,28 @@
     .content
     .querySelector('.setup-similar-item');
 
-    /*
-  // Создаёт массив из объектов со свойствами персонажей
-  function createWizardsArr(names, lastNames, coatColors, eyesColors, number) {
-    var wizards = [];
-    for (var i = 0; i < number; i++) {
-      var wizard = {};
-      wizard.name = names[window.util.getRandomInt(0, names.length)] + ' ' + lastNames[window.util.getRandomInt(0, lastNames.length)];
-      wizard.coatColor = coatColors[window.util.getRandomInt(0, coatColors.length)];
-      wizard.eyesColor = eyesColors[window.util.getRandomInt(0, eyesColors.length)];
-      wizards.push(wizard);
-    }
-    return wizards;
-  }
-  var names = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон'
-  ];
-  var lastNames = [
-    'да Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг'
-  ];
-  var coatColors = [
-    'rgb(101, 137, 164)',
-    'rgb(241, 43, 107)',
-    'rgb(146, 100, 161)',
-    'rgb(56, 159, 117)',
-    'rgb(215, 210, 55)',
-    'rgb(0, 0, 0)'
-  ];
-  var eyesColors = [
-    'black',
-    'red',
-    'blue',
-    'yellow',
-    'green'
-  ];
-  // создаём массив с магами
-  var wizardsArr = createWizardsArr(names, lastNames, coatColors, eyesColors, 4);
-   */
-
+  window.backend.load(successHandler, errorHandler);
 
   // ф-ия для создания мага из шаблона по свойствам
   function renderWizard(wizard, template) {
     var wizardElement = template.cloneNode(true);
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
     wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
     return wizardElement;
   }
   // создаёт фрагмент с магами
   function getWizardsFragment(wizards, quantity, template) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < quantity; i++) {
-      fragment.appendChild(renderWizard(wizards[window.util.getRandomInt(0, wizards.length)], template));
+      fragment.appendChild(renderWizard(wizards[i], template));
     }
     return fragment;
   }
 
   function successHandler(wizardsData) {
-    // вставка фрагмента в DOM
-    similarListElement.appendChild(getWizardsFragment(wizardsData, 4, similarWizardTemplate));
-    // показываем блок setup-similar
-    document.querySelector('.setup-similar').classList.remove('hidden');
+    window.wizardsData = wizardsData;
+    updateWizards();
   }
 
   function errorHandler(errorMessage) {
@@ -96,10 +43,43 @@
     document.body.insertAdjacentElement('afterbegin', divNode);
   }
 
-  /*   // вставка фрагмента в DOM
-  similarListElement.appendChild(getWizardsFragment(wizardsArr, similarWizardTemplate));
-  // показываем блок setup-similar
-  document.querySelector('.setup-similar').classList.remove('hidden'); */
+  //
+  function getRank(wizard) {
+    var rank = 0;
+    if (wizard.colorCoat === window.wizard.coatColor) {
+      rank += 2;
+    }
+    if (wizard.colorEyes === window.wizard.eyesColor) {
+      rank += 1;
+    }
+    return rank;
+  }
 
-  window.backend.load(successHandler, errorHandler);
+  function namesComparator(left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+
+  function updateWizards() {
+    var sortedWizardData = window.wizardsData.slice().sort(function (left, right) {
+      var rankDiff = getRank(right) - getRank(left);
+      if (rankDiff === 0) {
+        rankDiff = namesComparator(left.name, right.name);
+      }
+      return rankDiff;
+    });
+
+    window.updateWizards = updateWizards;
+    similarListElement.innerHTML = '';
+    // вставка фрагмента в DOM
+    similarListElement.appendChild(getWizardsFragment(sortedWizardData, 4, similarWizardTemplate));
+    // показываем блок setup-similar
+    document.querySelector('.setup-similar').classList.remove('hidden');
+  }
+
 })();

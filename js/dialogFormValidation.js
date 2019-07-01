@@ -1,7 +1,11 @@
 'use strict';
 (function () {
   var userNameInput = document.querySelector('.setup-user-name');
+  window.wizard.name = userNameInput.value;
   // валидация формы
+  userNameInput.addEventListener('input', function () {
+    window.wizard.name = userNameInput.value;
+  });
   userNameInput.addEventListener('invalid', function () {
     if (userNameInput.validity.tooShort) {
       userNameInput.setCustomValidity('Имя должно состоять минимум из 2-х символов');
