@@ -2,9 +2,11 @@
 (function () {
   var setupBlock = document.querySelector('.setup');
   var setupWizard = setupBlock.querySelector('.setup-player');
+  window.wizard = {};
 
   // мантия
   var wizardCoat = setupWizard.querySelector('.wizard-coat');
+  window.wizard.coatColor = wizardCoat.style.fill;
   var wizardCoatColors = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -16,6 +18,7 @@
 
   // глаза
   var wizardEyes = setupWizard.querySelector('.wizard-eyes');
+  window.wizard.eyesColor = 'black';
   var wizardEyesColors = [
     'black',
     'red',
@@ -26,6 +29,7 @@
 
   // фаербол
   var fireBall = setupWizard.querySelector('.setup-fireball-wrap');
+  window.wizard.fireBallColor = getComputedStyle(fireBall).backgroundColor;
   var fireBallColors = [
     '#ee4830',
     '#30a8ee',
@@ -51,16 +55,20 @@
       element.style.fill = color;
       input.value = color;
     }
+    return color;
   }
 
   function changeWizardColors(evt) {
     if (evt.target === wizardCoat) {
-      setElementColor(wizardCoat, wizardCoatColors, 'coat-color');
+      window.wizard.coatColor = setElementColor(wizardCoat, wizardCoatColors, 'coat-color');
     } else if (evt.target === wizardEyes) {
-      setElementColor(wizardEyes, wizardEyesColors, 'eyes-color');
+      window.wizard.eyesColor = setElementColor(wizardEyes, wizardEyesColors, 'eyes-color');
     } else if (evt.target === fireBall || document.querySelector('.setup-fireball')) {
-      setElementColor(fireBall, fireBallColors, 'fireball-color');
+      window.wizard.fireBallColor = setElementColor(fireBall, fireBallColors, 'fireball-color');
     }
+    window.debounce(function () {
+      window.updateWizards();
+    })();
   }
 
 })();
