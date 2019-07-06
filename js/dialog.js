@@ -30,14 +30,16 @@
   function FormErrorHandler(errorMessage) {
     var divNode = document.createElement('div');
     var spanNode = document.createElement('span');
-    divNode.style = 'position: absolute; top: 50%; z-index: 100; height: 60px; margin: 0 auto; display: flex; background-color: red; ';
+    divNode.style = 'position: absolute; top: 50%; z-index: 100; height: auto; margin: 0 auto; padding: 20px; display: flex; background-color: red; ';
     divNode.style.left = 0;
     divNode.style.right = 0;
     spanNode.textContent = errorMessage;
-    spanNode.style = 'margin: auto; font-size: 40px;';
+    spanNode.style = 'margin: auto; font-size: 40px; text-align:center';
     divNode.appendChild(spanNode);
     document.body.insertAdjacentElement('afterbegin', divNode);
   }
+
+  window.showError = FormErrorHandler;
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
@@ -90,7 +92,7 @@
   }
 
   function onDialogHandlerClick(evt) {
-    evt.preventDefault();
+    // evt.preventDefault();
     var element = setupBlock;
     var handleElement = dialogHandle;
     moveElement(evt, element, handleElement);
